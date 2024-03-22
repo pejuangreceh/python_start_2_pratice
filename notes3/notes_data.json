@@ -1,1 +1,7 @@
-{"Ini Notes Istimewa": {"tags": ["lorem", "good"], "text": "Lorem Ipsum dolor kansbkjabsdjbasd"}, "Ini Notes Kedua": {"tags": ["tomat", "suka", "good"], "text": "Saya suka makan tomat"}, "Pesan terakhir": {"tags": [], "text": "saya suka naruto"}, "Test One": {"tags": ["satu", "jsons"], "text": "Ini adalah note dari \"Test ONE\" asd"}, "Welcome!": {"tags": ["good", "first", "jsons"], "text": "This is the best note taking app in the world!"}}
+{
+    "Ini Notes Kedua": {"tags": ["tomat", "suka", "good"], "text": "Saya suka makan tomat"}, 
+    "Last Note": {"tags": ["prank", "good"], "text": "Ini adalah note terakhir saya untuk anak-anak saya, tolong dibaca dengan seksama\ntapi boong"}, 
+    "Sahur": {"tags": ["puasa", "good"], "text": "SHURRRRRRRRRRRRRRRRRRRRRRRA"}, 
+    "Welcome!": {"tags": ["good", "first", "jsons"], 
+    "text": "This is the best note taking app in the world!"}
+}
