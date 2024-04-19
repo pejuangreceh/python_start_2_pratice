@@ -1,4 +1,3 @@
-WElcome 2
-ini welcome 2
-asd asdaaa
+Notes kedua
 
+ 

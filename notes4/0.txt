@@ -1,27 +1,4 @@
-Welcome!
-ini welcome
-asd asd ddd
-
-note[0] = Welcome!
-note[1] = ini welcome
-note[2] = asd asd ddd
-notes[2] = tags
-tags[0] = asd
-tags[1] = asd
-tags[2] = ddd
-
-notes[2] = ['asd', 'asd', 'ddd']
-
-[
-    'Welcome!',
-    'ini welcome',
-    ['asd', 'asd', 'ddd']
-]
-
-[#notes
-    [#note
-        'Welcome!',
-        'ini welcome',
-        ['asd', 'asd', 'ddd']
-    ]
-]
+notes pertama saya
+ini adalah teks pertama saya, tolong jangan dihujat
+ini adalah tags
+good afternoon test 

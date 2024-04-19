@@ -25,4 +25,5 @@ class Assasin(Hero):
 karina = Assasin("Karina",100,50,70)
 
 print(karina.nama)
+karina.recall()
 

@@ -6,6 +6,8 @@ app = QApplication([])
 notes = []
 
 
+
+
 # App interface
 #app window parameters
 notes_win = QWidget()
@@ -16,7 +18,6 @@ notes_win.resize(900, 600)
 #app window widgets
 list_notes = QListWidget()
 list_notes_label = QLabel('List of notes')
-
 
 button_note_create = QPushButton('Create note') #a window with field "Enter note name" appears
 button_note_del = QPushButton('Delete note')
@@ -37,7 +38,6 @@ list_tags_label = QLabel('List of tags')
 layout_notes = QHBoxLayout()
 col_1 = QVBoxLayout()
 col_1.addWidget(field_text)
-
 
 col_2 = QVBoxLayout()
 col_2.addWidget(list_notes_label)
@@ -79,6 +79,7 @@ def show_note():
             field_text.setText(note[1])
             list_tags.clear()
             list_tags.addItems(note[2])
+            # debugging / logging
             print('ini line 1 : ', note[0])
             print('ini line 2 : ', note[1])
             print('ini line 3 : ', note[2])
@@ -86,20 +87,21 @@ def show_note():
 
 def add_note():
     note_name, ok = QInputDialog.getText(notes_win, "Add note", "Note name: ")
-    if ok and note_name != "":
+
+    if ok and  note_name != "":
         note = list()
         note = [note_name, '', []]
         notes.append(note)
         list_notes.addItem(note[0])
         list_tags.addItems(note[2])
         print(notes)
-        with open("notes4/"+str(len(notes)-1)+".txt", "w") as file:
+        with open("notes4/"+str(len(notes)-1)+".txt", "w") as file: #notes4/0.txt
             file.write(note[0]+'\n')
 
 
 def save_note():
     if list_notes.selectedItems():
-        key = list_notes.selectedItems()[0].text()
+        key = list_notes.selectedItems()[0].text() #notes pertama saya
         index = 0
         for note in notes:
             if note[0] == key:
