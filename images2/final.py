@@ -45,35 +45,33 @@ win.setLayout(row)
 
 win.show()
 
-
-workdir = ''
+workdir = '' #set variable untuk direktori yang dipilih
 
 
 def filter(files, extensions):
    result = []
+   hitung = 0
    for filename in files:
        for ext in extensions:
+           hitung +=1
            if filename.endswith(ext):
                result.append(filename)
+   print("hitung berapa kali perulangan = ", hitung)
    print("the result = ", result)
    return result
-   
-
 
 def chooseWorkdir():
    global workdir
    workdir = QFileDialog.getExistingDirectory()
    print("the workdir = ",workdir)
 
-
 def showFilenamesList():
-   extensions = ['.jpg','.jpeg', '.png', '.gif', '.bmp']
+   extensions = ['.jpg','.jpeg', '.png', '.gif', '.bmp','.pdf']
    chooseWorkdir()
    filenames = filter(os.listdir(workdir), extensions)
    lw_files.clear()
    for filename in filenames:
        lw_files.addItem(filename)
-
 
 btn_dir.clicked.connect(showFilenamesList)
 app.exec()
