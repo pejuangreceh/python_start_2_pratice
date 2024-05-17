@@ -123,7 +123,7 @@ class ImageProcessor():
        self.showImage(image_path)
 
    def do_sharpen(self):
-       self.image = self.image.filter(SMOOTH)
+       self.image = self.image.filter(SHARPEN)
        self.saveImage()
        image_path = os.path.join(workdir, self.save_dir, self.filename)
        self.showImage(image_path)
