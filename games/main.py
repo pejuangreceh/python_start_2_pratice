@@ -14,7 +14,7 @@ speed = 10
 #game loop
 run = True
 clock = time.Clock()
-FPS = 60
+FPS = 20
 while run:
    window.blit(background,(0, 0))
    window.blit(sprite1, (x1, y1))
