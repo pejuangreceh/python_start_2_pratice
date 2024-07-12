@@ -8,17 +8,19 @@ print("ini direktori awal == ",script_dir)
 
 #background music
 mixer.init()
-mixer.music.load('shoot3/space.ogg')
+mixer.music.load('shoot4/space.ogg')
 mixer.music.play()
-fire_sound = mixer.Sound('shoot3/pew.ogg')
+fire_sound = mixer.Sound('shoot4/pew.ogg')
 
 #fonts and labels
 font.init()
 font2 = font.Font(None, 36)
+win = font2.render("YOU WIN", 1, (255,255,0))
+lose = font2.render("YOU LOSE", 1, (255,0,0))
 
 # we need these pictures:
-img_back = "galaxy.jpg" # game background
-img_hero = "rocket.png" # character
+img_back = "background2.png" # game background
+img_hero = "sukuna_bg_black-removebg-preview.png" # character
 img_alien = "ufo.png" # character
 img_bullet = "bullet.png" # bullet
 
@@ -31,6 +33,8 @@ img_bullet = os.path.join(script_dir, img_bullet)
 # variabel untuk skor dan lost
 score = 0
 missed = 0
+goal = 10
+max_lost = 3
 
 # parent class for other sprites
 class GameSprite(sprite.Sprite):
@@ -108,6 +112,8 @@ background = transform.scale(image.load(img_back), (win_width, win_height))
 ship = Player(img_hero, 100, win_height - 100, 80, 100, 10)
 
 # create alien
+animasi_ledakan = sprite.Group()
+
 aliens = sprite.Group()
 for i in range(1,6):
     speed_random = random.randint(1,8)
@@ -142,9 +148,16 @@ while run:
         # producing sprite movements
         ship.update()
         aliens.update()
-
         bullets.update()
         
+        collides = sprite.groupcollide(aliens,bullets,True,True)
+
+        for c in collides:
+    
+            score += 1
+            alien = Monster(img_alien, random.randint(100,600), 0, 100, 60, speed_random)
+            aliens.add(alien)
+
         text = font2.render("Score: " + str(score), 1, (255, 255, 255))
         window.blit(text, (10, 20))
         
@@ -157,6 +170,13 @@ while run:
         aliens.draw(window)
         bullets.draw(window)
 
+        if score >= goal:
+            window.blit(win, (280, 250))
+            finish = True
+
+        if missed >= max_lost or sprite.spritecollide(ship, aliens, False):
+            window.blit(lose, (280, 250))
+            finish = True
         display.update()
     # the loop runs every 0.05 seconds
     time.delay(50)

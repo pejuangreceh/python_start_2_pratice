@@ -73,20 +73,8 @@ class Enemy(GameSprite):
         # disappears if it reaches the edge of the screen
         if self.rect.y > win_height:
             self.rect.x = randint(80, win_width - 80)
-            s   
+            self.rect.y = 0
             lost = lost + 1
-
-# enemy sprite class   
-# class Bullet(GameSprite):
-#     # enemy movement
-#     def update(self):
-#         self.rect.y += self.speed
-#         global lost
-#         # disappears if it reaches the edge of the screen
-#         if self.rect.y > win_height:
-#             self.rect.x = randint(80, win_width - 80)
-#             self.rect.y = 0
-#             lost = lost + 1
 
 # Create the window
 win_width = 700
@@ -100,7 +88,7 @@ ship = Player(img_hero, 5, win_height - 100, 80, 100, 10)
 
 monsters = sprite.Group()
 for i in range(1, 6):
-    monster = Enemy(img_enemy, randint(80, win_width - 80), -40, 80, 50, i)
+    monster = Enemy(img_enemy, randint(80, win_width - 80), -40, 80, 50, randint(1, 5))
     monsters.add(monster)
     print("monster ke ",i ," speed == ", monster.speed)
 print("jumlah alien = ",len(monsters))

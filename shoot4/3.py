@@ -8,26 +8,32 @@ print("ini direktori awal == ",script_dir)
 
 #background music
 mixer.init()
-mixer.music.load('shoot2/space.ogg')
+mixer.music.load('shoot3/space.ogg')
 mixer.music.play()
-fire_sound = mixer.Sound('shoot2/fire.ogg')
+fire_sound = mixer.Sound('shoot3/fire.ogg')
 
 #fonts and labels
 font.init()
+font1 = font.Font(None, 80)
+win = font1.render('YOU WIN!', True, (255, 255, 255))
+lose = font1.render('YOU LOSE!', True, (180, 0, 0))
 font2 = font.Font(None, 36)
 
 # we need these pictures:
 img_back = "galaxy.jpg" # game background
 img_hero = "rocket.png" # character
+img_bullet = "bullet.png" # bullet
 img_enemy = "ufo.png" # enemy
 
 # tambahkan os
 img_back = os.path.join(script_dir, img_back)
 img_hero = os.path.join(script_dir, img_hero)
 img_enemy = os.path.join(script_dir, img_enemy)
+img_bullet = os.path.join(script_dir, img_bullet)
 
 score = 0 # ships hit
 lost = 0 # ships missed
+max_lost = 3 # lost if this many missed
 
 # parent class for other sprites
 class GameSprite(sprite.Sprite):
@@ -62,7 +68,8 @@ class Player(GameSprite):
             self.rect.x += self.speed
   # the "fire" method (use the player's place to create a bullet there)
     def fire(self):
-        pass
+        bullet = Bullet(img_bullet, self.rect.centerx, self.rect.top, 15, 20, -15)
+        bullets.add(bullet)
 
 # enemy sprite class   
 class Enemy(GameSprite):
@@ -73,20 +80,17 @@ class Enemy(GameSprite):
         # disappears if it reaches the edge of the screen
         if self.rect.y > win_height:
             self.rect.x = randint(80, win_width - 80)
-            s   
+            self.rect.y = 0
             lost = lost + 1
 
-# enemy sprite class   
-# class Bullet(GameSprite):
-#     # enemy movement
-#     def update(self):
-#         self.rect.y += self.speed
-#         global lost
-#         # disappears if it reaches the edge of the screen
-#         if self.rect.y > win_height:
-#             self.rect.x = randint(80, win_width - 80)
-#             self.rect.y = 0
-#             lost = lost + 1
+# bullet sprite class   
+class Bullet(GameSprite):
+    # enemy movement
+    def update(self):
+        self.rect.y += self.speed
+        # disappears if it reaches the edge of the screen
+        if self.rect.y < 0:
+            self.kill()
 
 # Create the window
 win_width = 700
@@ -100,10 +104,10 @@ ship = Player(img_hero, 5, win_height - 100, 80, 100, 10)
 
 monsters = sprite.Group()
 for i in range(1, 6):
-    monster = Enemy(img_enemy, randint(80, win_width - 80), -40, 80, 50, i)
+    monster = Enemy(img_enemy, randint(80, win_width - 80), -40, 80, 50, randint(1, 5))
     monsters.add(monster)
-    print("monster ke ",i ," speed == ", monster.speed)
-print("jumlah alien = ",len(monsters))
+
+bullets = sprite.Group()
 
 # the "game over" variable: as soon as it is True, the sprites stop working in the main loop
 finish = False
@@ -114,6 +118,11 @@ while run:
     for e in event.get():
         if e.type == QUIT:
             run = False
+        # press on the space bar event - the sprite fires
+        elif e.type == KEYDOWN:
+            if e.key == K_SPACE:
+                fire_sound.play()
+                ship.fire()
 
     if not finish:
         # refresh background
@@ -129,10 +138,12 @@ while run:
         # producing sprite movements
         ship.update()
         monsters.update()
+        bullets.update()
 
         # updating them at a new location on each iteration of the loop
         ship.reset()
         monsters.draw(window)
+        bullets.draw(window)
 
         display.update()
     # the loop runs every 0.05 seconds

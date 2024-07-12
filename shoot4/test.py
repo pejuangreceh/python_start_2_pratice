@@ -1,6 +1,6 @@
 from pygame import *
 import os
-import random
+from random import randint 
 
 # add root dir
 script_dir = os.path.dirname(__file__)
@@ -10,11 +10,13 @@ print("ini direktori awal == ",script_dir)
 mixer.init()
 mixer.music.load('shoot3/space.ogg')
 mixer.music.play()
-fire_sound = mixer.Sound('shoot3/pew.ogg')
+fire_sound = mixer.Sound('shoot3/fire.mp3')
 
 #fonts and labels
 font.init()
 font2 = font.Font(None, 36)
+win = font2.render('YOU WIN!', True, (255, 255, 255))
+lose = font2.render('YOU LOSE!', True, (180, 0, 0))
 
 # we need these pictures:
 img_back = "galaxy.jpg" # game background
@@ -29,8 +31,10 @@ img_alien = os.path.join(script_dir, img_alien)
 img_bullet = os.path.join(script_dir, img_bullet)
 
 # variabel untuk skor dan lost
-score = 0
-missed = 0
+score = 0 # ships hit
+goal = 10 # how many ships need to be hit to win
+missed = 0 # ships missed
+max_lost = 10 # lost if this many missed
 
 # parent class for other sprites
 class GameSprite(sprite.Sprite):
@@ -84,7 +88,7 @@ class Monster(GameSprite):
         if self.side == "down":
             self.rect.y += self.speed
         else:
-            self.rect.x = random.randint(100,600)
+            self.rect.x = randint(100,600)
             self.rect.y = 0
             missed += 1
 
@@ -110,9 +114,9 @@ ship = Player(img_hero, 100, win_height - 100, 80, 100, 10)
 # create alien
 aliens = sprite.Group()
 for i in range(1,6):
-    speed_random = random.randint(1,8)
+    speed_random = randint(1,8)
     print("alien ke ",i, "kecepatan = ",speed_random )
-    alien = Monster(img_alien, random.randint(100,600), 0, 100, 60, speed_random)
+    alien = Monster(img_alien, randint(100,600), 0, 100, 60, speed_random)
     aliens.add(alien)
 
 # create bullets
@@ -156,7 +160,23 @@ while run:
         # aliens.reset()
         aliens.draw(window)
         bullets.draw(window)
+        # bullet-monster collision check (both monster and bullet disappear upon touching)
+        collides = sprite.groupcollide(aliens, bullets, True, True)
+        for c in collides:
+            # this loop will be repeated as many times as aliens are killed
+            score = score + 1
+            monster = Monster(img_alien, randint(100,600), 0, 100, 60, speed_random)
+            aliens.add(monster)
 
+        # possible loss: missed too many or the character collided with the alien
+        if sprite.spritecollide(ship, aliens, False) or missed >= max_lost:
+            finish = True # lost, set the background and no more sprite control.
+            window.blit(lose, (200, 200))
+
+        # win check: how many points did you score?
+        if score >= goal:
+            finish = True
+            window.blit(win, (200, 200))
         display.update()
     # the loop runs every 0.05 seconds
     time.delay(50)
